@@ -1,0 +1,33 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="SaveFileAsync">Save File</button>
+
+<pre>
+    @(this.exceptionText)
+</pre>
+
+@code {
+    string exceptionText = "";
+
+    async Task SaveFileAsync()
+    {
+#if WINDOWS
+        var diag = new Windows.Storage.Pickers.FileSavePicker();
+        diag.FileTypeChoices.Add("PDF", new List<string>() { ".pdf" });
+
+        try
+        {
+            await diag.PickSaveFileAsync(); // Exception here
+        }
+        catch (Exception ex)
+        {
+            this.exceptionText = ex.ToString();
+        }
+#endif
+    }
+
+}
